@@ -1,14 +1,18 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from "./views/Login";
-import Datos from "./views/Datos";
+import Home from "./views/Home";
+import LayaoutHeader from "./layouts/layout-header";
 
 export default function Router(){
     return(
         <BrowserRouter>
             <Routes>
-                <Route path="/" element={<Login />}></Route>
-                <Route path="/datos" element={<Datos />}></Route>
+                <Route path="/" element={<Login />}/>
+                <Route element={<LayaoutHeader />}>
+                    <Route path="/home" element={<Home />}/>
                 
+                </Route>
+        
             </Routes>
         </BrowserRouter>
     )

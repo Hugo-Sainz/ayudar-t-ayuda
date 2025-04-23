@@ -15,7 +15,7 @@ function Login() {
       const response = await login(user, password);
       if (response.Status === "Success") {
         console.log("Login successful:", response);
-        navigate("/datos");
+        navigate("/home");
       } else {
         alert("Usuario o contraseña incorrectos");
       }
