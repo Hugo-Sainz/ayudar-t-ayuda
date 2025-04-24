@@ -13,7 +13,7 @@ export default function Header() {
             <span className="font-semibold text-red-600 text-lg hidden md:inline">Centro Médico</span>
           </div>
 
-          <div className="hidden md:flex items-center gap-4 flex-1 max-w-md mx-4">
+          {/* <div className="hidden md:flex items-center gap-4 flex-1 max-w-md mx-4">
             <div className="relative w-full">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
               <input
@@ -22,7 +22,7 @@ export default function Header() {
                 className="w-full pl-10 pr-4 py-2 rounded-full border border-gray-200 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent text-sm"
               />
             </div>
-          </div>
+          </div> */}
 
           <div className="flex items-center gap-3">
             <button className="relative p-2 rounded-full hover:bg-gray-100">
@@ -33,9 +33,9 @@ export default function Header() {
             </button>
 
             <div className="flex items-center gap-3">
-              <Avatar className="h-9 w-9 border-2 border-red-100">
+              <Avatar className="h-9 w-9 border-2 border-red-100 rounded-full bg-red-100">
                 <AvatarImage src="/placeholder.svg?height=36&width=36" alt="Saul Mino Cabrera" />
-                <AvatarFallback className="bg-red-100 text-red-800">SM</AvatarFallback>
+                <AvatarFallback className="bg-red-100 text-red-800 rounded-full">SM</AvatarFallback>
               </Avatar>
               <div className="hidden md:block">
                 <p className="text-sm font-medium">Saul Mino Cabrera</p>
