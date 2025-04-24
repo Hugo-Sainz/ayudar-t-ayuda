@@ -1,6 +1,7 @@
-import LoginCard from '../components/LoginCard'
+import LoginCard from '../../../components/LoginCard'
 import { useNavigate } from 'react-router-dom';
-import { login } from '../services/authServices';
+import { login } from '../../../services/authServices';
+import { setLocalStorage } from '../../../services/localStorage';
 
 function Login() {
   const navigate = useNavigate();
@@ -14,8 +15,11 @@ function Login() {
     try {
       const response = await login(user, password);
       if (response.Status === "Success") {
-        console.log("Login successful:", response);
+        const token = "succes"
+
         navigate("/home");
+        setLocalStorage(response, token)
+
       } else {
         alert("Usuario o contraseña incorrectos");
       }

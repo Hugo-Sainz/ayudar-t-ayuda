@@ -10,7 +10,13 @@ interface AppointmentCardProps {
   status: "confirmed" | "pending" | "cancelled"
 }
 
-export function AppointmentCard({ date, time, doctor, specialty, status }: AppointmentCardProps) {
+export function AppointmentCard({
+  date,
+  time,
+  doctor,
+  specialty,
+  status,
+}: AppointmentCardProps) {
   const statusConfig = {
     confirmed: { label: "Confirmada", color: "bg-green-100 text-green-800" },
     pending: { label: "Pendiente", color: "bg-yellow-100 text-yellow-800" },
@@ -48,3 +54,4 @@ export function AppointmentCard({ date, time, doctor, specialty, status }: Appoi
     </Card>
   )
 }
+

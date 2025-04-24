@@ -8,7 +8,11 @@ interface ServiceCardProps {
   icon: React.ReactNode
 }
 
-export function ServiceCard({ title, description, icon }: ServiceCardProps) {
+export function ServiceCard({
+  title,
+  description,
+  icon,
+}: ServiceCardProps) {
   return (
     <Card className="overflow-hidden hover:shadow-md transition-shadow cursor-pointer bg-white/90 backdrop-blur-sm">
       <CardContent className="p-4">
