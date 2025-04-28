@@ -1,47 +1,16 @@
-import { ArrowLeft, CalendarCheck } from "lucide-react"
+import { CalendarCheck } from "lucide-react"
 import { Button } from "../../../components/ui/button"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "../../../components/ui/card"
 import { DatePicker } from "../../../components/ui/date-picker"
 import { Label } from "../../../components/ui/laber"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../../components/ui/select"
 import { TimeSlotPicker } from "../../../components/ui/time-slot-picker"
-import { useNavigate } from "react-router-dom"
 
 export default function Appointments() {
-  const navigate = useNavigate()
-
-  const handleClick = () => {
-    navigate("/home") // cambia "/ruta-destino" por la ruta que quieras
-  }
 
   return (
     <div className="min-h-screen relative">
       
-      {/* Header */}
-      <header className="bg-white/95 backdrop-blur-sm border-b border-gray-200 sticky top-0 z-10">
-        <div className="container mx-auto px-4 py-3 flex items-center">
-          <button 
-            className="flex items-center gap-2 solid cursor-pointer" 
-            onClick={handleClick}
-            >
-            <Button 
-                variant="secondary" 
-                size="icon" 
-                className="mr-2">
-              <ArrowLeft className="h-5 w-5" />
-            </Button>
-            <span className="font-semibold text-red-600 text-lg hidden md:inline">Volver</span>
-            <div className="h-10 w-10 relative">
-                <img 
-                    src="/logo.png" 
-                    alt="Logo" 
-                    className="object-contain" 
-                />
-            </div>
-          </button>
-        </div>
-      </header>
-
       {/* Main Content */}
       <main className="container mx-auto px-4 py-8 relative z-1">
         <div className="max-w-3xl mx-auto">

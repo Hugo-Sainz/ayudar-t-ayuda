@@ -17,7 +17,7 @@ export default function Home() {
     <div className="min-h-screen relative">
       
       {/* Main Content */}
-      <main className="container mx-auto px-10 py-8 relative z-1 ">
+      <main className="container mx-auto px-10 py-8 relative z-1">
         <div className="mb-8">
           <h1 className="text-2xl font-bold text-gray-900">Bienvenido, Saul</h1>
           <p className="text-gray-600">¿Qué deseas hacer hoy?</p>
@@ -35,7 +35,7 @@ export default function Home() {
           <QuickActionCard
             icon={<ClipboardList className="h-6 w-6 text-red-600" />}
             title="Historial de Citas"
-            href="#"
+            href={"/history"}
             notification={true}
             notificationCount={3}
             exit="false"
@@ -43,28 +43,28 @@ export default function Home() {
           <QuickActionCard
             icon={<Stethoscope className="h-6 w-6 text-red-600" />}
             title="Servicios"
-            href="#"
+            href="/services"
             notification={false}
             exit="false"
           />
           <QuickActionCard
             icon={<MessageSquare className="h-6 w-6 text-red-600" />}
             title="Quejas y Sugerencias"
-            href="#"
+            href="/complaints"
             notification={false}
             exit="false"
           />
           <QuickActionCard
             icon={<HelpCircle className="h-6 w-6 text-red-600" />}
             title="Ayuda"
-            href="#"
+            href="/help"
             notification={false}
             exit="false"
           />
           <QuickActionCard
             icon={<LogOut className="h-6 w-6 text-red-600" />}
             title="Salir"
-            href="#"
+            href="/"
             notification={false}
             exit="true"
           />

@@ -32,24 +32,24 @@ function Login() {
 
   return (
     <>
-    <div className='bg-[url("/fondo.avif")] bg-cover bg-center h-screen w-screen flex justify-center items-center'>
+    <div className='bg-[url("/fondo.avif")] bg-cover bg-center h-screen w-screen flex justify-center items-center z-500'>
     <div className="flex items-center justify-center h-screen">
-    <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-sm md:w-80 lg:w-[400px]">
-      <div className="text-center">
-        <img
-          alt="Logo Cruz Roja Mexicana"
-          src="/logo.png"
-          className="mx-auto h-40 w-auto"
-        />
-        <h2 className="mt-6 text-2xl font-bold tracking-tight text-gray-900">
-          Inicio de Sesión
-        </h2>
-      </div>
-      <div className="mt-8">
-        <LoginCard onSubmit={handleSubmit} />
+      <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-sm md:w-80 lg:w-[400px]">
+        <div className="text-center">
+          <img
+            alt="Logo Cruz Roja Mexicana"
+            src="/logo.png"
+            className="mx-auto h-40 w-auto"
+          />
+          <h2 className="mt-6 text-2xl font-bold tracking-tight text-gray-900">
+            Inicio de Sesión
+          </h2>
+        </div>
+        <div className="mt-8">
+          <LoginCard onSubmit={handleSubmit} />
+        </div>
       </div>
     </div>
-</div>
 
 
     </div>
