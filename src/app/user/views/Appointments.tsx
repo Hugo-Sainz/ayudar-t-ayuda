@@ -3,10 +3,33 @@ import { Button } from "../../../components/ui/button"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "../../../components/ui/card"
 import { DatePicker } from "../../../components/ui/date-picker"
 import { Label } from "../../../components/ui/laber"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../../components/ui/select"
+// import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../../components/ui/select"
 import { TimeSlotPicker } from "../../../components/ui/time-slot-picker"
+import SelectDinamic from "../../../components/selectDinamic"
+import { getServices } from "../services/appointments"
+import { useEffect, useState } from "react"
 
 export default function Appointments() {
+  const [selectedServicio, setSelectedServicio] = useState("")
+  const [selectedUrgencias, setSelectedUrgencias] = useState("")
+  const [fechaSeleccionada, setFechaSeleccionada] = useState("")
+  const [services, setServices] = useState()
+
+  useEffect(() => {
+
+    const fetchData = async () => {
+      try {
+        const response = await getServices();
+        const services = response.servicios
+
+        setServices(services)
+      } catch (error) {
+        console.error("Error al obtener datos:", error);
+      }
+    };
+
+    fetchData(); // Se ejecuta justo al cargar el componente
+  }, []); // El arreglo vacío [] asegura que solo se ejecute una vez al montarse
 
   return (
     <div className="min-h-screen relative">
@@ -24,39 +47,48 @@ export default function Appointments() {
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-6">
+
               {/* Seleccionar Servicio */}
               <div className="space-y-2">
                 <Label htmlFor="service" className="text-base font-medium">
                   Seleccionar Servicio:
                 </Label>
-                <Select>
-                  <SelectTrigger id="service" className="w-full">
-                    <SelectValue placeholder="Seleccionar servicio" />
-                  </SelectTrigger>
-                  <SelectContent className="bg-white">
-                    <SelectItem value="general">Consulta General</SelectItem>
-                    <SelectItem value="especialidad">Consulta Especialidad</SelectItem>
-                    <SelectItem value="pediatria">Pediatría</SelectItem>
-                    <SelectItem value="ginecologia">Ginecología</SelectItem>
-                    <SelectItem value="cardiologia">Cardiología</SelectItem>
-                    <SelectItem value="dermatologia">Dermatología</SelectItem>
-                    <SelectItem value="oftalmologia">Oftalmología</SelectItem>
-                  </SelectContent>
-                </Select>
+                <SelectDinamic 
+                  items={services || []} 
+                  onSelectChange={setSelectedServicio}/>
               </div>
+                  
+              {/* Select de Urgencias */}
+              {selectedServicio === "URGENCIAS" && (
+                <SelectDinamic
+                  items={[
+                    { id_servicio: 1,
+                      nombre: "Accidente Laboral", 
+                      precio: "0" },
+                    { id_servicio: 2,
+                      nombre: "Enfermedad General",
+                      precio: "0" },
+                    ]} 
+                  onSelectChange={setSelectedUrgencias}
+                />
+              )}
+
 
               {/* Seleccionar Fecha */}
               <div className="space-y-2">
-                <Label htmlFor="date" className="text-base font-medium">
-                  Seleccionar Fecha:
-                </Label>
-                <DatePicker />
+                <DatePicker 
+                  onDateChange={setFechaSeleccionada}
+                  disabled={selectedServicio === "URGENCIAS"}
+                />
               </div>
 
               {/* Seleccionar Horario */}
-              <div className="space-y-2">
+              <div className={`space-y-2 ${selectedServicio === "URGENCIAS" ? "hidden" : ""}`}>
                 <Label className="text-base font-medium">Seleccionar Horario:</Label>
-                <TimeSlotPicker />
+                <TimeSlotPicker 
+                  date={fechaSeleccionada} 
+                  service={selectedServicio}
+                />
               </div>
 
               {/* Notas adicionales */}
@@ -73,8 +105,8 @@ export default function Appointments() {
             </CardContent>
             <CardFooter className="flex justify-between border-t p-6">
               <Button variant="outline">Cancelar</Button>
-              <Button className="bg-red-600 hover:bg-red-700">
-                <CalendarCheck className="mr-2 h-4 w-4" />
+              <Button className="bg-red-600 hover:bg-red-700 text-white">
+                <CalendarCheck className="mr-2 h-4 w-4 " />
                 Programar Cita
               </Button>
             </CardFooter>

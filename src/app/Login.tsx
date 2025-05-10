@@ -1,7 +1,7 @@
-import LoginCard from '../../../components/LoginCard'
+import LoginCard from '../components/LoginCard'
 import { useNavigate } from 'react-router-dom';
-import { login } from '../../../services/authServices';
-import { setLocalStorage } from '../../../services/localStorage';
+import { login } from './user/services/authServices';
+import { setLocalStorage } from './user/services/localStorage';
 
 function Login() {
   const navigate = useNavigate();

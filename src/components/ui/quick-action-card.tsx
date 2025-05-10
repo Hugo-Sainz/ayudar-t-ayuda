@@ -2,7 +2,7 @@
 import type React from "react"
 import { Badge } from "./badge"
 import { useNavigate } from "react-router-dom"
-import { clearLocalStorage } from "../../services/localStorage"
+import { clearLocalStorage } from "../../app/user/services/localStorage"
 
 
 interface QuickActionCardProps {

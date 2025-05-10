@@ -3,68 +3,11 @@ import { Button } from "../../../components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "../../../components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../../components/ui/tabs"
 import { Input } from "../../../components/ui/input"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "../../../components/ui/dropdown-menu"
 import { Badge } from "../../../components/ui/badge"
+import { useEffect, useState } from "react"
+import { getCitas } from "../services/datingHidtory"
 
-// Datos de ejemplo para las citas
-const citas = [
-  {
-    id: 1,
-    fecha: "16/02/2025",
-    hora: "13:06",
-    servicio: "Prueba",
-    doctor: "Dr. Juan Pérez",
-    estado: "pendiente",
-  },
-  {
-    id: 2,
-    fecha: "14/02/2025",
-    hora: "15:00",
-    servicio: "Consulta General",
-    doctor: "Dra. María Rodríguez",
-    estado: "completada",
-  },
-  {
-    id: 3,
-    fecha: "28/03/2025",
-    hora: "16:30",
-    servicio: "Consulta General",
-    doctor: "Dr. Carlos Méndez",
-    estado: "pendiente",
-  },
-  {
-    id: 4,
-    fecha: "31/03/2025",
-    hora: "13:00",
-    servicio: "Consulta General",
-    doctor: "Dra. Ana López",
-    estado: "pendiente",
-  },
-  {
-    id: 5,
-    fecha: "28/03/2025",
-    hora: "16:30",
-    servicio: "Paquete de Parto",
-    doctor: "Dra. Laura Martínez",
-    estado: "pendiente",
-  },
-  {
-    id: 6,
-    fecha: "28/03/2025",
-    hora: "14:00",
-    servicio: "Medicina Interna",
-    doctor: "Dr. Isaac Castillo Hernández",
-    estado: "pendiente",
-  },
-  {
-    id: 7,
-    fecha: "31/03/2025",
-    hora: "11:00",
-    servicio: "Pediatría",
-    doctor: "Dr. Roberto Sánchez",
-    estado: "pendiente",
-  },
-]
+const idEmpleado = localStorage.getItem("id_empleado")
 
 // Datos de ejemplo para el historial
 const historial = [
@@ -103,6 +46,25 @@ const historial = [
 ]
 
 export default function HistorialCitasPage() {
+  const [citas, setCitas] = useState<any[]>([])
+
+  useEffect(() => {
+  
+      const fetchData = async () => {
+        try {
+          const response = await getCitas(idEmpleado || "");
+          const citas = response.Data
+          // console.log(citas)
+  
+          setCitas(citas)
+        } catch (error) {
+          console.error("Error al obtener citas:", error);
+        }
+      };
+  
+      fetchData();
+    }, []); // El arreglo vacío [] asegura que solo se ejecute una vez al montarse
+
   return (
     <div className="min-h-screen relative">
       
@@ -128,10 +90,12 @@ export default function HistorialCitasPage() {
               <div className="flex items-center gap-2">
                 <div className="relative">
                   <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
-                  <Input type="text" placeholder="Buscar citas..." className="pl-10 pr-4 py-2 w-full sm:w-auto" />
+                  <Input type="text" placeholder="Buscar citas..." className="pl-10 pr-4 py-2 w-full sm:w-auto bg-white" />
                 </div>
 
-                <DropdownMenu>
+                {/* Dropdown para filtrar por servicio (opcional) */}
+
+                {/* <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <Button variant="outline" size="icon">
                       <Filter className="h-4 w-4" />
@@ -143,11 +107,8 @@ export default function HistorialCitasPage() {
                     <DropdownMenuItem>Especialidades</DropdownMenuItem>
                     <DropdownMenuItem>Laboratorio</DropdownMenuItem>
                   </DropdownMenuContent>
-                </DropdownMenu>
+                </DropdownMenu> */}
 
-                <Button variant="outline" size="icon">
-                  <Download className="h-4 w-4" />
-                </Button>
               </div>
             </div>
 
@@ -170,29 +131,29 @@ export default function HistorialCitasPage() {
                       </thead>
                       <tbody className="divide-y divide-gray-100">
                         {citas.map((cita) => (
-                          <tr key={cita.id} className="hover:bg-gray-50">
+                          <tr key={cita.id_agenda} className="hover:bg-gray-50">
                             <td className="px-4 py-4 text-sm">{cita.fecha}</td>
                             <td className="px-4 py-4 text-sm">{cita.hora}</td>
-                            <td className="px-4 py-4 text-sm font-medium">{cita.servicio}</td>
+                            <td className="px-4 py-4 text-sm font-medium">{cita.nombre_ser}</td>
                             <td className="px-4 py-4 text-sm">
                               <Badge
                                 className={
-                                  cita.estado === "completada"
-                                    ? "bg-green-100 text-green-800 hover:bg-green-100"
+                                  cita.estatus === "procesando"
+                                    ? "bg-yellow-100 text-yellow-800 hover:bg-green-100"
                                     : cita.estado === "cancelada"
                                       ? "bg-red-100 text-red-800 hover:bg-red-100"
                                       : "bg-yellow-100 text-yellow-800 hover:bg-yellow-100"
                                 }
                               >
-                                {cita.estado}
+                                {cita.estatus}
                               </Badge>
                             </td>
                             <td className="px-4 py-4 text-sm">
                               <div className="flex items-center gap-2">
-                                <Button variant="outline" size="sm" className="h-8 px-2 text-gray-600">
+                                {/* <Button variant="outline" size="sm" className="h-8 px-2 text-gray-600">
                                   <Eye className="h-3.5 w-3.5 mr-1" />
                                   <span className="hidden sm:inline">Ver</span>
-                                </Button>
+                                </Button> */}
                                 <Button
                                   variant="outline"
                                   size="sm"

@@ -1,4 +1,4 @@
-import { ENV } from "../constants/ENV";
+import { ENV } from "../../../constants/ENV";
 
 export const login = async (user: string, pass: string) => {
 
