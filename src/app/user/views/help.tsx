@@ -81,7 +81,8 @@ export default function AyudaPage() {
 
                       <div className="mt-4 h-48 bg-gray-200 rounded-lg relative overflow-hidden">
                         <div className="absolute inset-0 flex items-center justify-center">
-                          <p className="text-gray-500">Mapa de ubicación</p>
+                          {/* <p className="text-gray-500">Mapa de ubicación</p> */}
+                          
                         </div>
                       </div>
                     </div>

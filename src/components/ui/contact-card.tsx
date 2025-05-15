@@ -65,7 +65,7 @@ export function ContactCard({
 
         <Button
           onClick={handleWhatsAppClick}
-          className={`mt-6 w-full ${
+          className={`mt-6 w-full text-white ${
             isEmergency ? "bg-green-600 hover:bg-green-700" : "bg-green-600 hover:bg-green-700"
           }`}
         >

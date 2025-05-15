@@ -13,13 +13,15 @@ import { AppointmentCard } from "../../../components/ui/appointment-card"
 import { QuickActionCard } from "../../../components/ui/quick-action-card"
 
 export default function Home() {
+  const username = localStorage.getItem("nombre_completo")
+
   return (
     <div className="min-h-screen relative">
       
       {/* Main Content */}
-      <main className="container mx-auto px-10 py-8 relative z-1">
+      <main className="container mx-auto px-10 py-8 relative z-1 ">
         <div className="mb-8">
-          <h1 className="text-2xl font-bold text-gray-900">Bienvenido, Saul</h1>
+          <h1 className="text-2xl font-bold text-gray-900">Bienvenido, {username}</h1>
           <p className="text-gray-600">¿Qué deseas hacer hoy?</p>
         </div>
 
@@ -36,8 +38,8 @@ export default function Home() {
             icon={<ClipboardList className="h-6 w-6 text-red-600" />}
             title="Historial de Citas"
             href={"/history"}
-            notification={true}
-            notificationCount={3}
+            notification={false}
+            notificationCount={0}
             exit="false"
           />
           <QuickActionCard

@@ -5,58 +5,28 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../../components/ui
 import { Input } from "../../../components/ui/input"
 import { Badge } from "../../../components/ui/badge"
 import { useEffect, useState } from "react"
-import { getCitas } from "../services/datingHidtory"
+import { getCitas, getCitasHistorial } from "../services/datingHidtory"
 
 const idEmpleado = localStorage.getItem("id_empleado")
 
-// Datos de ejemplo para el historial
-const historial = [
-  {
-    id: 101,
-    fecha: "10/01/2025",
-    hora: "09:30",
-    servicio: "Consulta General",
-    doctor: "Dra. María Rodríguez",
-    estado: "completada",
-  },
-  {
-    id: 102,
-    fecha: "05/12/2024",
-    hora: "14:15",
-    servicio: "Cardiología",
-    doctor: "Dr. Carlos Méndez",
-    estado: "completada",
-  },
-  {
-    id: 103,
-    fecha: "22/11/2024",
-    hora: "11:00",
-    servicio: "Laboratorio",
-    doctor: "Dra. Ana López",
-    estado: "completada",
-  },
-  {
-    id: 104,
-    fecha: "15/10/2024",
-    hora: "16:45",
-    servicio: "Consulta General",
-    doctor: "Dr. Juan Pérez",
-    estado: "cancelada",
-  },
-]
-
 export default function HistorialCitasPage() {
   const [citas, setCitas] = useState<any[]>([])
+  const [historial, setHistorial] = useState<any[]>([])
 
   useEffect(() => {
   
       const fetchData = async () => {
         try {
-          const response = await getCitas(idEmpleado || "");
-          const citas = response.Data
-          // console.log(citas)
+          const citasProximas = await getCitas(idEmpleado || "");
+          // const citasHistorial = await getCitasHistorial();
+
+          const citas = citasProximas.Data
+          // const historial = citasHistorial.Data
+          console.log(citas)
+          console.log(historial)
   
           setCitas(citas)
+          // setHistorial(historial)
         } catch (error) {
           console.error("Error al obtener citas:", error);
         }
@@ -187,7 +157,7 @@ export default function HistorialCitasPage() {
                           <th className="px-4 py-3 text-sm font-medium text-red-800">Hora</th>
                           <th className="px-4 py-3 text-sm font-medium text-red-800">Servicio</th>
                           <th className="px-4 py-3 text-sm font-medium text-red-800">Estado</th>
-                          <th className="px-4 py-3 text-sm font-medium text-red-800">Acciones</th>
+                          {/* <th className="px-4 py-3 text-sm font-medium text-red-800">Acciones</th> */}
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-gray-100">
@@ -213,12 +183,12 @@ export default function HistorialCitasPage() {
                                     : "Pendiente"}
                               </Badge>
                             </td>
-                            <td className="px-4 py-4 text-sm">
+                            {/* <td className="px-4 py-4 text-sm">
                               <Button variant="outline" size="sm" className="h-8 px-2 text-gray-600">
                                 <Eye className="h-3.5 w-3.5 mr-1" />
                                 <span className="hidden sm:inline">Detalles</span>
                               </Button>
-                            </td>
+                            </td> */}
                           </tr>
                         ))}
                       </tbody>

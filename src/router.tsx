@@ -9,6 +9,8 @@ import LayoutHeaderBack from "./layouts/header-back";
 import Services from "./app/user/views/services";
 import QuejasSugerenciasPage from "./app/user/views/complaints";
 import AyudaPage from "./app/user/views/help";
+import DataUser from "./app/user/views/dataUser";
+import UpdatePassword from "./app/user/views/updatePassword";
 
 export default function Router() {
   return (
@@ -40,6 +42,8 @@ export default function Router() {
           <Route path="/services" element={<Services />} />
           <Route path="/complaints" element={<QuejasSugerenciasPage />} />
           <Route path="/help" element={<AyudaPage />} />
+          <Route path="/dataUser" element={<DataUser/>} />
+          <Route path="/updatePassword" element={<UpdatePassword/>} />
 
         </Route>
       </Routes>
