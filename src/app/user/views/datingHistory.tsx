@@ -5,28 +5,27 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../../components/ui
 import { Input } from "../../../components/ui/input"
 import { Badge } from "../../../components/ui/badge"
 import { useEffect, useState } from "react"
-import { getCitas, getCitasHistorial } from "../services/datingHidtory"
-
-const idEmpleado = localStorage.getItem("id_empleado")
+import { cancelDating, getCitas, getCitasHistorial } from "../services/datingHistory"
 
 export default function HistorialCitasPage() {
   const [citas, setCitas] = useState<any[]>([])
   const [historial, setHistorial] = useState<any[]>([])
+  const idEmpleado = localStorage.getItem("id_empleado")
 
   useEffect(() => {
   
       const fetchData = async () => {
         try {
           const citasProximas = await getCitas(idEmpleado || "");
-          // const citasHistorial = await getCitasHistorial();
+          const citasHistorial = await getCitasHistorial(idEmpleado || "");
 
           const citas = citasProximas.Data
-          // const historial = citasHistorial.Data
-          console.log(citas)
+          const historial = citasHistorial.Data
+          // console.log(citas)
           console.log(historial)
   
           setCitas(citas)
-          // setHistorial(historial)
+          setHistorial(historial)
         } catch (error) {
           console.error("Error al obtener citas:", error);
         }
@@ -34,6 +33,16 @@ export default function HistorialCitasPage() {
   
       fetchData();
     }, []); // El arreglo vacío [] asegura que solo se ejecute una vez al montarse
+
+  const cancelar = async(id : any) => {
+    try {
+      const response = await cancelDating(id);
+      console.log(response)
+
+    } catch (error) {
+      console.error("Error al cancelar citas:", error);
+    }
+  }
 
   return (
     <div className="min-h-screen relative">
@@ -128,6 +137,7 @@ export default function HistorialCitasPage() {
                                   variant="outline"
                                   size="sm"
                                   className="h-8 px-2 text-red-600 border-red-200 hover:bg-red-50 hover:text-red-700"
+                                  onClick = {()=>cancelar(cita.id_agenda)}
                                 >
                                   <X className="h-3.5 w-3.5 mr-1" />
                                   <span className="hidden sm:inline">Cancelar</span>
@@ -142,7 +152,8 @@ export default function HistorialCitasPage() {
                 </CardContent>
               </Card>
             </TabsContent>
-
+            
+            {/* Historial de citas */}
             <TabsContent value="historial" className="mt-0">
               <Card className="bg-white/90 backdrop-blur-sm shadow-sm">
                 <CardHeader className="pb-0">
@@ -162,24 +173,24 @@ export default function HistorialCitasPage() {
                       </thead>
                       <tbody className="divide-y divide-gray-100">
                         {historial.map((cita) => (
-                          <tr key={cita.id} className="hover:bg-gray-50">
+                          <tr key={cita.id_agenda} className="hover:bg-gray-50">
                             <td className="px-4 py-4 text-sm">{cita.fecha}</td>
                             <td className="px-4 py-4 text-sm">{cita.hora}</td>
-                            <td className="px-4 py-4 text-sm font-medium">{cita.servicio}</td>
+                            <td className="px-4 py-4 text-sm font-medium">{cita.nombre_ser}</td>
                             <td className="px-4 py-4 text-sm">
                               <Badge
                                 className={
-                                  cita.estado === "completada"
+                                  cita.estatus === "Aprobado"
                                     ? "bg-green-100 text-green-800 hover:bg-green-100"
-                                    : cita.estado === "cancelada"
+                                    : cita.estatus === "cancelado"
                                       ? "bg-red-100 text-red-800 hover:bg-red-100"
                                       : "bg-yellow-100 text-yellow-800 hover:bg-yellow-100"
                                 }
                               >
-                                {cita.estado === "completada"
+                                {cita.estatus === "Aprobado"
                                   ? "Completada"
-                                  : cita.estado === "cancelada"
-                                    ? "Cancelada"
+                                  : cita.estatus === "cancelado"
+                                    ? "Cancelado"
                                     : "Pendiente"}
                               </Badge>
                             </td>
@@ -209,7 +220,7 @@ export default function HistorialCitasPage() {
                   </div>
                   <div>
                     <p className="text-sm text-gray-500">Total de Citas</p>
-                    <p className="text-2xl font-bold">{citas.length + historial.length}</p>
+                    <p className="text-2xl font-bold">{ historial.length}</p>
                   </div>
                 </div>
               </CardContent>
@@ -237,7 +248,7 @@ export default function HistorialCitasPage() {
                   </div>
                   <div>
                     <p className="text-sm text-gray-500">Citas Completadas</p>
-                    <p className="text-2xl font-bold">{historial.filter((c) => c.estado === "completada").length}</p>
+                    <p className="text-2xl font-bold">{historial.filter((c) => c.estatus === "Aprobado").length}</p>
                   </div>
                 </div>
               </CardContent>

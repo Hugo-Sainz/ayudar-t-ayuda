@@ -73,7 +73,7 @@ export default function AyudaPage() {
                 </CardHeader>
                 <CardContent>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
+                    <div >
                       <h3 className="font-medium mb-2">Sede Principal</h3>
                       <p className="text-sm text-gray-600 mb-1">Av. Reforma 1234, Col. Centro</p>
                       <p className="text-sm text-gray-600 mb-1">Puebla, Puebla, CP 72000</p>
@@ -83,19 +83,6 @@ export default function AyudaPage() {
                         <div className="absolute inset-0 flex items-center justify-center">
                           {/* <p className="text-gray-500">Mapa de ubicación</p> */}
                           
-                        </div>
-                      </div>
-                    </div>
-
-                    <div>
-                      <h3 className="font-medium mb-2">Sucursal Norte</h3>
-                      <p className="text-sm text-gray-600 mb-1">Blvd. Norte 567, Col. Las Ánimas</p>
-                      <p className="text-sm text-gray-600 mb-1">Puebla, Puebla, CP 72400</p>
-                      <p className="text-sm text-gray-600">Tel: (222) 765-4321</p>
-
-                      <div className="mt-4 h-48 bg-gray-200 rounded-lg relative overflow-hidden">
-                        <div className="absolute inset-0 flex items-center justify-center">
-                          <p className="text-gray-500">Mapa de ubicación</p>
                         </div>
                       </div>
                     </div>

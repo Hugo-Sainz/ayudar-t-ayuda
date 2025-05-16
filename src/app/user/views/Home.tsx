@@ -11,9 +11,30 @@ import { Button } from "../../../components/ui/button"
 import { ServiceCard } from "../../../components/ui/service-card"
 import { AppointmentCard } from "../../../components/ui/appointment-card"
 import { QuickActionCard } from "../../../components/ui/quick-action-card"
+import { useNavigate } from "react-router-dom"
+import { getCitas } from "../services/datingHistory"
+import { useEffect, useState } from "react"
 
 export default function Home() {
+  const navigate = useNavigate()
+  const [citas, setCitas] = useState<any[]>([])
   const username = localStorage.getItem("nombre_completo")
+  const userId = localStorage.getItem("id_empleado")
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const citasProximas = await getCitas(userId || "");
+        const cita = citasProximas.Data || []
+        console.log(citasProximas)
+
+        setCitas(cita)
+      } catch (error) {
+        console.error("Error al obtener citas:", error);
+      }
+    };
+    fetchData();
+  }, []); // El arreglo vacío [] asegura que solo se ejecute una vez al montarse
 
   return (
     <div className="min-h-screen relative">
@@ -80,26 +101,23 @@ export default function Home() {
               variant="outline"
               size="sm"
               className="text-black-600 bg-white border-black-200 hover:bg-red-50 hover:text-red-700"
+              onClick={() => navigate("/history")}
             >
               Ver todas
             </Button>
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-            <AppointmentCard
-              date="15 Mayo, 2025"
-              time="10:30 AM"
-              doctor="Dra. María Rodríguez"
-              specialty="Medicina General"
-              status="confirmed"
-            />
-            <AppointmentCard
-              date="22 Mayo, 2025"
-              time="3:15 PM"
-              doctor="Dr. Carlos Méndez"
-              specialty="Cardiología"
-              status="pending"
-            />
+            {citas.map((cita) => (
+              <AppointmentCard
+                date= {cita.fecha}
+                time={cita.hora}
+                doctor={cita.nombre_ser}
+                specialty="Cruz Roja Mexicana"
+                status={cita.estatus === "procesando" ? "pending": "cancelled"}
+              />
+
+            ))}
           </div>
         </div>
 

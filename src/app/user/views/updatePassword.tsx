@@ -8,6 +8,7 @@ import { Button } from "../../../components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "../../../components/ui/card"
 import { Input } from "../../../components/ui/input"
 import { Label } from "../../../components/ui/laber"
+import { updatePassword } from "../services/password"
 
 export default function UpdatePassword() {
   const [showCurrentPassword, setShowCurrentPassword] = useState(false)
@@ -49,10 +50,10 @@ export default function UpdatePassword() {
     }
     let isValid = true
 
-    if (!formData.currentPassword) {
-      newErrors.currentPassword = "La contraseña actual es requerida"
-      isValid = false
-    }
+    // if (!formData.currentPassword) {
+    //   newErrors.currentPassword = "La contraseña actual es requerida"
+    //   isValid = false
+    // }
 
     if (!formData.newPassword) {
       newErrors.newPassword = "La nueva contraseña es requerida"
@@ -77,17 +78,28 @@ export default function UpdatePassword() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
 
+    const formDataToSend = {
+      id_emp: localStorage.getItem("id_empleado"),
+      nueva_contraseña: formData.newPassword,
+    }
+
     if (!validateForm()) {
       return
     }
-
+ 
     setIsSubmitting(true)
 
-    // Simulación de envío
-    setTimeout(() => {
-      setIsSubmitting(false)
-      setIsSuccess(true)
+    setTimeout(async() => {
+      try {
+        const response = await updatePassword(formDataToSend)
+        console.log("Respuesta del servidor:", response)
+        
+        setIsSubmitting(false)
+        setIsSuccess(true)
 
+      } catch (error) {
+        console.error("Error al enviar el formulario:", error)
+      }
       // Resetear el formulario después de 3 segundos
       setTimeout(() => {
         setIsSuccess(false)
@@ -129,7 +141,7 @@ export default function UpdatePassword() {
                 </div>
               ) : (
                 <form onSubmit={handleSubmit} className="space-y-6">
-                  <div className="space-y-2">
+                  {/* <div className="space-y-2">
                     <Label htmlFor="currentPassword">Contraseña actual</Label>
                     <div className="relative">
                       <Input
@@ -148,7 +160,7 @@ export default function UpdatePassword() {
                       </button>
                     </div>
                     {errors.currentPassword && <p className="text-sm text-red-500">{errors.currentPassword}</p>}
-                  </div>
+                  </div> */}
 
                   <div className="space-y-2">
                     <Label htmlFor="newPassword">Nueva contraseña</Label>

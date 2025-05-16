@@ -3,16 +3,22 @@ import { Button } from "../../../components/ui/button"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "../../../components/ui/card"
 import { DatePicker } from "../../../components/ui/date-picker"
 import { Label } from "../../../components/ui/laber"
-// import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../../components/ui/select"
 import { TimeSlotPicker } from "../../../components/ui/time-slot-picker"
 import SelectDinamic from "../../../components/selectDinamic"
-import { getServices } from "../services/appointments"
+import { getServices, uploadAppointments } from "../services/appointments"
 import { useEffect, useState } from "react"
+import { toast } from "sonner"
+import { useNavigate } from "react-router-dom"
+
 
 export default function Appointments() {
+  const navigate = useNavigate()
+  const hoy = new Date()
+
   const [selectedServicio, setSelectedServicio] = useState("")
   const [selectedUrgencias, setSelectedUrgencias] = useState("")
   const [fechaSeleccionada, setFechaSeleccionada] = useState("")
+  const [timeSelect, setTimeSelect] = useState("")
   const [services, setServices] = useState()
 
   useEffect(() => {
@@ -31,20 +37,61 @@ export default function Appointments() {
     fetchData(); // Se ejecuta justo al cargar el componente
   }, []); // El arreglo vacío [] asegura que solo se ejecute una vez al montarse
 
-  const handleSubmit = (event:any) => {
+  const handleSubmit = async (event:any) => {
     event.preventDefault();
 
-    const formData = new FormData(event.target);
-    
-    const dataObject : any = {};
-    formData.forEach((value, key) => {
-      dataObject[key] = value;
-    });
+    const formData = {
+      servicio: selectedServicio,
+      fecha: fechaSeleccionada,
+      horario: timeSelect,
+      fk_empleado: localStorage.getItem("id_empleado"),
+      estatus: "procesando"
+    }
 
-    console.log('Datos del formulario:', dataObject);
+    const formDataUrgencias = {
+      ...formData,
+      servicio: selectedUrgencias,
+      fecha: hoy.toISOString().split('T')[0], // Formato YYYY-MM-DD
+      horario: hoy.toTimeString().split(' ')[0], // Formato HH:MM:SS
+      
+    }
 
-    // Aquí puedes enviar los datos a tu backend usando fetch o axios
-    // fetch('/api/endpoint', { method: 'POST', body: JSON.stringify(dataObject) });
+    const formDataPsicologia = {
+      ...formData,
+      servicio: selectedServicio,
+      fecha: hoy.toISOString().split('T')[0], // Formato YYYY-MM-DD
+      horario: hoy.toTimeString().split(' ')[0], // Formato HH:MM:SS
+    }
+
+    try {
+      if(selectedServicio === "URGENCIAS"){
+        await uploadAppointments(formDataUrgencias)
+        alert("Cita agendada con éxito")
+        toast.success("Cita agendada con éxito")
+        
+        navigate("/history")
+
+        return
+      }
+      
+      if(selectedServicio === "PSICOLOGÍA"){
+        await uploadAppointments(formDataPsicologia)
+        alert("Cita agendada con éxito")
+        navigate("/history")
+
+        return
+      }
+
+      await uploadAppointments(formData)
+      alert("Cita agendada con éxito")
+      navigate("/history")
+
+      return
+
+    } catch (error) {
+      console.log("Error: ",error)
+    }
+
   };
 
   return (
@@ -54,7 +101,6 @@ export default function Appointments() {
       <main className="container mx-auto px-4 py-8 relative z-1">
         <div className="max-w-3xl mx-auto">
           <h1 className="text-2xl font-bold text-gray-900 mb-6">Agendar Cita</h1>
-          <form onSubmit={handleSubmit}>
             <Card className="bg-white/90 backdrop-blur-sm shadow-md">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-red-600">
@@ -79,29 +125,33 @@ export default function Appointments() {
                   <SelectDinamic
                     items={[
                       { id_servicio: 1,
-                        nombre: "Accidente Laboral", 
+                        nombre: "URGENCIAS - Accidente Laboral", 
                         precio: "0" },
                       { id_servicio: 2,
-                        nombre: "Enfermedad General",
+                        nombre: "URGENCIAS - Enfermedad General",
                         precio: "0" },
                       ]} 
                     onSelectChange={setSelectedUrgencias}
                   />
                 )}
 
-
                 {/* Seleccionar Fecha */}
                 <div className="space-y-2">
                   <DatePicker 
                     onDateChange={setFechaSeleccionada}
-                    disabled={selectedServicio === "URGENCIAS"}
+                    disabled={selectedServicio === "URGENCIAS" || selectedServicio === "PSICOLOGÍA"}
                   />
                 </div>
 
                 {/* Seleccionar Horario */}
-                <div className={`space-y-2 ${selectedServicio === "URGENCIAS" ? "hidden" : ""}`}>
+                <div className={
+                  `space-y-2 ${selectedServicio === "URGENCIAS" || 
+                    selectedServicio === "PSICOLOGÍA" ? 
+                      "hidden" : ""}`
+                }>
                   <Label className="text-base font-medium">Seleccionar Horario:</Label>
                   <TimeSlotPicker 
+                    onTimeChange = {setTimeSelect}
                     date={fechaSeleccionada} 
                     service={selectedServicio}
                   />
@@ -120,17 +170,22 @@ export default function Appointments() {
                 </div> */}
               </CardContent>
               <CardFooter className="flex justify-between border-t p-6">
-                <Button variant="outline">Cancelar</Button>
+                <Button  
+                  variant="outline" 
+                  onClick={() => navigate("/home")}
+                  className="hover:bg-gray-300 text-gray-800 cursor-pointer"
+                >
+                  Cancelar
+                </Button>
                 <Button 
                   className="bg-red-600 hover:bg-red-700 text-white" 
-                  type="submit"
+                  onClick={handleSubmit}
                 >
                   <CalendarCheck className="mr-2 h-4 w-4 " />
                   Programar Cita
                 </Button>
               </CardFooter>
             </Card>
-          </form>
 
           {/* Información adicional */}
           <div className="mt-8 bg-blue-50 border border-blue-100 rounded-lg p-4 text-sm text-blue-700">

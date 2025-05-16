@@ -19,7 +19,7 @@ export function DatePicker({ onDateChange, disabled }: Props) {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedDate = e.target.value
     setDate(selectedDate)
-    onDateChange(selectedDate) // 👈 se lo mandamos al padre
+    onDateChange(selectedDate) //le mandamos el vlor al componente padre 
   }
 
   return (

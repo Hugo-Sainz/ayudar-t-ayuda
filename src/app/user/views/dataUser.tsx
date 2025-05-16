@@ -10,7 +10,7 @@ const userData = {
   telefono: localStorage.getItem("numero_telefonico") || "",
   direccion: localStorage.getItem("direccion") || "",
   fechaNacimiento: localStorage.getItem("fecha_nacimiento") || "",
-  lugarNacimiento: localStorage.getItem("lugar_nacimiento") || "",
+  lugarNacimiento: localStorage.getItem("lugar_nacimiento") || "Desconocido",
   empresa: localStorage.getItem("empresa") || "",
   genero: localStorage.getItem("sexo") || "",
   puesto: localStorage.getItem("puesto") || "", 

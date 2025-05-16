@@ -7,7 +7,8 @@ import { getHorarios } from "../../app/user/services/appointments"
 
 interface Props {
   date: string,
-  service: string,
+  service: string, 
+  onTimeChange: (date: string) => void,
 }
 
 function obtenerDiaSemana(fecha: any) {
@@ -24,12 +25,19 @@ const ALL_TIMES = [
   "16:00", "16:30", "17:00", "17:30", "18:00", "18:30", "19:00", "19:30",
 ];
 
-export function TimeSlotPicker({ date, service }: Props) {
+export function TimeSlotPicker({ date, service, onTimeChange }: Props) {
 
   const [selectedTime, setSelectedTime] = useState<string | null>(null)
   const [timeSlots, setTimeSlots] = useState<{ time: string, available: boolean }[]>([])
 
   const diaSemana = obtenerDiaSemana(date)
+
+  useEffect(() => {
+    if (selectedTime !== null) {
+      onTimeChange(selectedTime);
+    }
+  }, [selectedTime, onTimeChange]);
+  
 
   useEffect(() => {
     if (date && service) {

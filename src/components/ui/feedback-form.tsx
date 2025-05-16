@@ -7,6 +7,7 @@ import { Send } from "lucide-react"
 import { Label } from "./laber"
 import { Button } from "./button"
 import { Textarea } from "./text-area"
+import { uploadConplaints } from "../../app/user/services/complaints"
 
 export function FeedbackForm() {
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -26,11 +27,22 @@ export function FeedbackForm() {
     e.preventDefault()
     setIsSubmitting(true)
 
-    // Simulación de envío
-    setTimeout(() => {
-      setIsSubmitting(false)
-      setIsSuccess(true)
+    const formDataToSend = {
+      id_emp: localStorage.getItem("id_empleado"),
+      descripcion: formData.mensaje,
+    }
 
+    // Simulación de envío
+    setTimeout(async() => {
+      try {
+        const response = await uploadConplaints(formDataToSend)
+        console.log("Respuesta del servidor:", response)
+        setIsSubmitting(false)
+        setIsSuccess(true) 
+      } catch (error) {
+        console.error("Error al enviar el formulario:", error)
+        
+      }
       // Resetear el formulario después de 3 segundos
       setTimeout(() => {
         setIsSuccess(false)
