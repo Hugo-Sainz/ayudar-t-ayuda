@@ -37,7 +37,7 @@ export default function Home() {
   }, []); // El arreglo vacío [] asegura que solo se ejecute una vez al montarse
 
   return (
-    <div className="min-h-screen relative">
+    <div>
       
       {/* Main Content */}
       <main className="container mx-auto px-10 py-8 relative z-1 ">
@@ -129,6 +129,7 @@ export default function Home() {
               variant="outline"
               size="sm"
               className="text-black-600 bg-white border-black-200 hover:bg-red-50 hover:text-red-700"
+              onClick={() => navigate("/services")}
             >
               Todos los servicios
             </Button>

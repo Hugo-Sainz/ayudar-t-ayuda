@@ -6,6 +6,7 @@ import { Input } from "../../../components/ui/input"
 import { Badge } from "../../../components/ui/badge"
 import { useEffect, useState } from "react"
 import { cancelDating, getCitas, getCitasHistorial } from "../services/datingHistory"
+import Swal from 'sweetalert2'
 
 export default function HistorialCitasPage() {
   const [citas, setCitas] = useState<any[]>([])
@@ -36,8 +37,36 @@ export default function HistorialCitasPage() {
 
   const cancelar = async(id : any) => {
     try {
-      const response = await cancelDating(id);
-      console.log(response)
+      Swal.fire({
+        title: '¿Estás seguro?',
+        text: "¿Deseas cancelar esta cita?",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Sí, cancelar',
+        cancelButtonText: 'No, volver',
+        reverseButtons: true
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          const response = await cancelDating(id);
+          Swal.fire({
+              icon: 'success',
+              title: '¡Cita registrada exitosamente!',
+              text: 'Tu cita ha sido guardada.',
+              confirmButtonText: 'Aceptar'
+          }).then(() => {
+            window.location.reload();
+          })
+          console.log(response)
+        }else {
+          // Si el usuario cancela, no hacer nada
+          Swal.fire({
+              title: 'Cancelado',
+              text: 'La cita no fue cancelada.',
+              icon: 'info',
+              confirmButtonText: 'Aceptar'
+          });
+        }
+      })
 
     } catch (error) {
       console.error("Error al cancelar citas:", error);
@@ -45,7 +74,7 @@ export default function HistorialCitasPage() {
   }
 
   return (
-    <div className="min-h-screen relative">
+    <div>
       
       {/* Main Content */}
       <main className="container mx-auto px-4 py-8 relative z-1">
@@ -67,10 +96,10 @@ export default function HistorialCitasPage() {
               </TabsList>
 
               <div className="flex items-center gap-2">
-                <div className="relative">
+                {/* <div className="relative">
                   <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
                   <Input type="text" placeholder="Buscar citas..." className="pl-10 pr-4 py-2 w-full sm:w-auto bg-white" />
-                </div>
+                </div> */}
 
                 {/* Dropdown para filtrar por servicio (opcional) */}
 
@@ -109,7 +138,7 @@ export default function HistorialCitasPage() {
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-gray-100">
-                        {citas.map((cita) => (
+                        {citas?.map((cita) => (
                           <tr key={cita.id_agenda} className="hover:bg-gray-50">
                             <td className="px-4 py-4 text-sm">{cita.fecha}</td>
                             <td className="px-4 py-4 text-sm">{cita.hora}</td>
@@ -172,7 +201,7 @@ export default function HistorialCitasPage() {
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-gray-100">
-                        {historial.map((cita) => (
+                        {historial?.map((cita) => (
                           <tr key={cita.id_agenda} className="hover:bg-gray-50">
                             <td className="px-4 py-4 text-sm">{cita.fecha}</td>
                             <td className="px-4 py-4 text-sm">{cita.hora}</td>
@@ -220,7 +249,7 @@ export default function HistorialCitasPage() {
                   </div>
                   <div>
                     <p className="text-sm text-gray-500">Total de Citas</p>
-                    <p className="text-2xl font-bold">{ historial.length}</p>
+                    <p className="text-2xl font-bold">{ historial?.length}</p>
                   </div>
                 </div>
               </CardContent>
@@ -234,7 +263,7 @@ export default function HistorialCitasPage() {
                   </div>
                   <div>
                     <p className="text-sm text-gray-500">Citas Pendientes</p>
-                    <p className="text-2xl font-bold">{citas.length}</p>
+                    <p className="text-2xl font-bold">{citas?.length}</p>
                   </div>
                 </div>
               </CardContent>
@@ -248,7 +277,7 @@ export default function HistorialCitasPage() {
                   </div>
                   <div>
                     <p className="text-sm text-gray-500">Citas Completadas</p>
-                    <p className="text-2xl font-bold">{historial.filter((c) => c.estatus === "Aprobado").length}</p>
+                    <p className="text-2xl font-bold">{historial?.filter((c) => c.estatus === "Aprobado").length}</p>
                   </div>
                 </div>
               </CardContent>

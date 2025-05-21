@@ -7,9 +7,8 @@ import { TimeSlotPicker } from "../../../components/ui/time-slot-picker"
 import SelectDinamic from "../../../components/selectDinamic"
 import { getServices, uploadAppointments } from "../services/appointments"
 import { useEffect, useState } from "react"
-import { toast } from "sonner"
 import { useNavigate } from "react-router-dom"
-
+import Swal from 'sweetalert2'  
 
 export default function Appointments() {
   const navigate = useNavigate()
@@ -63,11 +62,40 @@ export default function Appointments() {
       horario: hoy.toTimeString().split(' ')[0], // Formato HH:MM:SS
     }
 
+    if ( 
+      fechaSeleccionada && 
+      new Date(fechaSeleccionada).toDateString() === hoy.toDateString() && 
+      Number(timeSelect) <= hoy.getTime()
+    ) {
+      console.log(hoy, "fecha selected: ", fechaSeleccionada);
+      Swal.fire({
+          icon: 'warning',
+          title: '¡Hora no válida!',
+          text: 'La hora seleccionada ya ha pasado. ¿Quieres agendar una cita personalizada para hoy?',
+          showCancelButton: true,
+          confirmButtonText: 'Sí, contactar por WhatsApp',
+          cancelButtonText: 'Cancelar'
+      }).then((result:any) => {
+          if (result.isConfirmed) {
+              const nombreUsuario = localStorage.getItem('nombre_completo');
+              const mensaje = encodeURIComponent(
+                  `Hola, quiero agendar una cita personalizada para hoy. Mi nombre es: ${nombreUsuario}. El servicio que requiero es: ${selectedServicio}.`
+              );
+              window.open(`https://wa.me/2221072513?text=${mensaje}`, '_blank');
+          }
+      });
+      return;
+    }
+
     try {
       if(selectedServicio === "URGENCIAS"){
         await uploadAppointments(formDataUrgencias)
-        alert("Cita agendada con éxito")
-        toast.success("Cita agendada con éxito")
+        Swal.fire({
+            icon: 'success',
+            title: '¡Cita registrada exitosamente!',
+            text: 'Tu cita ha sido guardada.',
+            confirmButtonText: 'Aceptar'
+        })
         
         navigate("/history")
 
@@ -76,26 +104,43 @@ export default function Appointments() {
       
       if(selectedServicio === "PSICOLOGÍA"){
         await uploadAppointments(formDataPsicologia)
-        alert("Cita agendada con éxito")
+         // Mostrar un SweetAlert con un mensaje personalizado
+        Swal.fire({
+            title: 'Cita Agendada',
+            text: 'Solicitud de cita agendada. En breve será contactado para agendar una hora y fecha.',
+            icon: 'info',
+            confirmButtonText: 'Aceptar'
+        })
         navigate("/history")
 
         return
       }
 
       await uploadAppointments(formData)
-      alert("Cita agendada con éxito")
+       Swal.fire({
+            icon: 'success',
+            title: '¡Cita registrada exitosamente!',
+            text: 'Tu cita ha sido guardada.',
+            confirmButtonText: 'Aceptar'
+        })
       navigate("/history")
 
       return
 
     } catch (error) {
       console.log("Error: ",error)
+       Swal.fire({
+            icon: 'error',
+            title: '¡Error al registrar la cita!',
+            text: 'Ocurrió un problema durante el registro. Por favor, intenta nuevamente.',
+            confirmButtonText: 'Aceptar'
+        });
     }
 
   };
 
   return (
-    <div className="min-h-screen relative">
+    <div>
       
       {/* Main Content */}
       <main className="container mx-auto px-4 py-8 relative z-1">
@@ -144,11 +189,13 @@ export default function Appointments() {
                 </div>
 
                 {/* Seleccionar Horario */}
-                <div className={
+                <div 
+                  className={
                   `space-y-2 ${selectedServicio === "URGENCIAS" || 
                     selectedServicio === "PSICOLOGÍA" ? 
                       "hidden" : ""}`
-                }>
+                  }
+                >
                   <Label className="text-base font-medium">Seleccionar Horario:</Label>
                   <TimeSlotPicker 
                     onTimeChange = {setTimeSelect}

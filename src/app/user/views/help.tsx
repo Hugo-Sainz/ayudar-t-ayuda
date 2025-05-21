@@ -1,11 +1,19 @@
-import { Phone, Mail, Clock, AlertCircle, MessageSquare } from "lucide-react"
+import { 
+  Phone, 
+  Mail, 
+  Clock, 
+  AlertCircle, 
+  MessageSquare 
+} from "lucide-react"
 import { Card, CardContent, CardHeader, CardTitle } from "../../../components/ui/card"
 import { Tabs, TabsContent } from "../../../components/ui/tabs"
 import { ContactCard } from "../../../components/ui/contact-card"
+import {Map, Marker, ZoomControl } from "pigeon-maps"
+import { href } from "react-router-dom"
 
 export default function AyudaPage() {
   return (
-    <div className="min-h-screen relative">
+    <div>
 
       {/* Main Content */}
       <main className="container mx-auto px-4 py-8 relative z-1">
@@ -72,7 +80,7 @@ export default function AyudaPage() {
                   <CardTitle className="text-lg text-gray-700">Ubicaciones</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className=" md:grid-cols-2 gap-6">
                     <div >
                       <h3 className="font-medium mb-2">Sede Principal</h3>
                       <p className="text-sm text-gray-600 mb-1">Av. Reforma 1234, Col. Centro</p>
@@ -80,8 +88,20 @@ export default function AyudaPage() {
                       <p className="text-sm text-gray-600">Tel: (222) 123-4567</p>
 
                       <div className="mt-4 h-48 bg-gray-200 rounded-lg relative overflow-hidden">
-                        <div className="absolute inset-0 flex items-center justify-center">
+                        <div className=" inset-0 flex items-center justify-center">
                           {/* <p className="text-gray-500">Mapa de ubicación</p> */}
+                          <Map 
+                            height={200} 
+                            defaultCenter={[19.04801, -98.18791]}
+                            defaultZoom={17}
+                          >
+                            <Marker 
+                              width={50} 
+                              anchor={[19.04801, -98.18791]} 
+                              onClick={() => {window.open("https://www.google.com.mx/maps/place/Cruz+Roja+Mexicana+Delegaci%C3%B3n+Estatal+Puebla/@19.0482874,-98.1881186,20.06z/data=!4m6!3m5!1s0x85cfc0fca961a605:0x403d45a15fbb2f39!8m2!3d19.0481212!4d-98.1880292!16s%2Fg%2F11f3y2b7mz?entry=ttu&g_ep=EgoyMDI1MDUxMy4xIKXMDSoJLDEwMjExNDU1SAFQAw%3D%3D", "_blank")}}
+                            />
+                            <ZoomControl/>
+                          </Map>
                           
                         </div>
                       </div>

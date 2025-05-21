@@ -5,7 +5,7 @@ import { FeedbackForm } from "../../../components/ui/feedback-form"
 
 export default function QuejasSugerenciasPage() {
   return (
-    <div className="min-h-screen relative">
+    <div>
     
       {/* Main Content */}
       <main className="container mx-auto px-4 py-8 relative z-1">

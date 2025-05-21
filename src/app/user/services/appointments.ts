@@ -1,4 +1,3 @@
-import { toast } from "sonner";
 import { ENV } from "../../../constants/ENV";
 
 export const getServices = async () => {
@@ -32,9 +31,6 @@ export const uploadAppointments = async (citaData:any) => {
   .then(response => response.text())
   .then(data => {
       console.log(data); // Mostrar la respuesta del servidor
-      toast.success("Cita agendada con éxito", {
-        description: "Recibirás un correo con la confirmación de tu cita"}
-      )
   })
   .catch(error => {
       console.error('Error:', error);
