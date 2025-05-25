@@ -26,7 +26,7 @@ export default function SelectDinamic({items, onSelectChange}:Props ){
     return (
         <Select onValueChange={handleSelect}>
             <SelectTrigger id="service" className="w-full">
-            <SelectValue placeholder="Seleccionar servicio" />
+                <SelectValue placeholder="Seleccionar servicio" />
             </SelectTrigger>
             <SelectContent className="bg-white">
             {items?.map((item:Servicio, index)=>(

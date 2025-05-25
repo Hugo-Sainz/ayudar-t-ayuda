@@ -1,8 +1,7 @@
-import { Calendar, Search, Filter, Download, X, Eye, Clock, Stethoscope } from "lucide-react"
+import { Calendar, X, Clock, Stethoscope } from "lucide-react"
 import { Button } from "../../../components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "../../../components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../../components/ui/tabs"
-import { Input } from "../../../components/ui/input"
 import { Badge } from "../../../components/ui/badge"
 import { useEffect, useState } from "react"
 import { cancelDating, getCitas, getCitasHistorial } from "../services/datingHistory"
@@ -74,7 +73,7 @@ export default function HistorialCitasPage() {
   }
 
   return (
-    <div>
+    <div className="h-[800px] overflow-y-scroll md:overflow-y-visible">
       
       {/* Main Content */}
       <main className="container mx-auto px-4 py-8 relative z-1">
@@ -138,7 +137,16 @@ export default function HistorialCitasPage() {
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-gray-100">
-                        {citas?.map((cita) => (
+                        {citas.filter((cita) => {
+                          const fechaCita = new Date(cita.fecha);
+                          const fechaActual = new Date();
+                          fechaActual.setDate(fechaActual.getDate() - 1);
+                          fechaActual.setHours(0, 0, 0, 0);
+
+                          return (
+                            fechaCita >= fechaActual
+                          );
+                        }).map((cita) => (
                           <tr key={cita.id_agenda} className="hover:bg-gray-50">
                             <td className="px-4 py-4 text-sm">{cita.fecha}</td>
                             <td className="px-4 py-4 text-sm">{cita.hora}</td>

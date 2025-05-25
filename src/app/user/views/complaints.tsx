@@ -5,8 +5,8 @@ import { FeedbackForm } from "../../../components/ui/feedback-form"
 
 export default function QuejasSugerenciasPage() {
   return (
-    <div>
-    
+    <div className="h-[800px] overflow-y-scroll md:overflow-y-visible">
+
       {/* Main Content */}
       <main className="container mx-auto px-4 py-8 relative z-1">
         <div className="max-w-3xl mx-auto">

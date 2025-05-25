@@ -11,11 +11,11 @@ export default function LayoutHeader() {
       ></div>
 
       {/* Overlay para mejorar legibilidad */}
-      <div className="absolute inset-0 bg-white/55 z-0"></div>
-      
+      <div className="absolute inset-0 bg-white/55 z-0 h-screen"></div>
+
       {/* Contenido */}
       <Header />
-      <main>
+      <main >
         <Outlet />
       </main>
     </>

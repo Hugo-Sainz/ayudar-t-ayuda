@@ -1,6 +1,5 @@
 "use client"
 
-import * as React from "react"
 import { cn } from "../../lib/utils"
 import { useEffect, useState } from "react"
 import { getHorarios } from "../../app/user/services/appointments"

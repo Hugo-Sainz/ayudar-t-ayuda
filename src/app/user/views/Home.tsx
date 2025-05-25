@@ -1,5 +1,4 @@
 import {
-  UserCircle,
   Calendar,
   ClipboardList,
   Stethoscope,
@@ -8,7 +7,6 @@ import {
   LogOut,
 } from "lucide-react"
 import { Button } from "../../../components/ui/button"
-import { ServiceCard } from "../../../components/ui/service-card"
 import { AppointmentCard } from "../../../components/ui/appointment-card"
 import { QuickActionCard } from "../../../components/ui/quick-action-card"
 import { useNavigate } from "react-router-dom"
@@ -21,7 +19,7 @@ export default function Home() {
   const username = localStorage.getItem("nombre_completo")
   const userId = localStorage.getItem("id_empleado")
 
-  useEffect(() => {
+  useEffect(() => { // Efecto para obtener las citas al cargar el componente
     const fetchData = async () => {
       try {
         const citasProximas = await getCitas(userId || "");
@@ -37,10 +35,10 @@ export default function Home() {
   }, []); // El arreglo vacío [] asegura que solo se ejecute una vez al montarse
 
   return (
-    <div>
-      
+    <div className="h-[800px] overflow-y-scroll md:overflow-y-visible">
+
       {/* Main Content */}
-      <main className="container mx-auto px-10 py-8 relative z-1 ">
+      <main className="container mx-auto px-10 py-8 relative z-1">
         <div className="mb-8">
           <h1 className="text-2xl font-bold text-gray-900">Bienvenido, {username}</h1>
           <p className="text-gray-600">¿Qué deseas hacer hoy?</p>
@@ -107,22 +105,42 @@ export default function Home() {
             </Button>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {citas.map((cita) => (
-              <AppointmentCard
-                date= {cita.fecha}
-                time={cita.hora}
-                doctor={cita.nombre_ser}
-                specialty="Cruz Roja Mexicana"
-                status={cita.estatus === "procesando" ? "pending": "cancelled"}
-              />
+          {
+            citas.length === 0 ? (
+              <div className="flex items-center justify-center h-64">
+                <p className="text-gray-500">No tienes citas programadas.</p>
+              </div>
+            ) : (
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {citas
+                  .filter((cita) => {
+                    const fechaCita = new Date(cita.fecha);
+                    const fechaActual = new Date();
+                    fechaActual.setDate(fechaActual.getDate() - 1);
+                    fechaActual.setHours(0, 0, 0, 0);
 
-            ))}
-          </div>
+                    return (
+                      fechaCita >= fechaActual
+                    );
+                  })
+                  .map((cita) => (
+                    <AppointmentCard
+                      date= {cita.fecha}
+                      time={cita.hora}
+                      doctor={cita.nombre_ser}
+                      specialty="Cruz Roja Mexicana"
+                      status={cita.estatus === "procesando" ? "pending": "cancelled"}
+                    />
+                  ))
+                }
+              </div>
+            )
+          }
         </div>
 
-        {/* Health Services */}
-        <div>
+        {/* Servicios Destacados */}
+        
+        {/* <div>
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-xl font-semibold text-gray-900">Servicios Destacados</h2>
             <Button
@@ -157,7 +175,7 @@ export default function Home() {
               icon={<HelpCircle className="h-5 w-5" />}
             />
           </div>
-        </div>
+        </div> */}
       </main>
     </div>
   )

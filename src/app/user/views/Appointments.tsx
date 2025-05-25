@@ -12,7 +12,7 @@ import Swal from 'sweetalert2'
 
 export default function Appointments() {
   const navigate = useNavigate()
-  const hoy = new Date()
+  const hoy = new Date() 
 
   const [selectedServicio, setSelectedServicio] = useState("")
   const [selectedUrgencias, setSelectedUrgencias] = useState("")
@@ -20,12 +20,11 @@ export default function Appointments() {
   const [timeSelect, setTimeSelect] = useState("")
   const [services, setServices] = useState()
 
-  useEffect(() => {
-
+  useEffect(() => { // Efecto para obtener los servicios al cargar el componente
     const fetchData = async () => {
       try {
         const response = await getServices();
-        const services = response.servicios
+        const services = response.servicios;
 
         setServices(services)
       } catch (error) {
@@ -36,7 +35,7 @@ export default function Appointments() {
     fetchData(); // Se ejecuta justo al cargar el componente
   }, []); // El arreglo vacío [] asegura que solo se ejecute una vez al montarse
 
-  const handleSubmit = async (event:any) => {
+  const handleSubmit = async (event:any) => { // Manejo del evento de envío del formulario
     event.preventDefault();
 
     const formData = {
@@ -62,9 +61,16 @@ export default function Appointments() {
       horario: hoy.toTimeString().split(' ')[0], // Formato HH:MM:SS
     }
 
-    if ( 
+    const fechaSel = new Date(fechaSeleccionada);
+    fechaSel.setHours(0,0,0,0);
+
+    const hoySinHora = new Date();
+    hoySinHora.setHours(0,0,0,0);
+
+    if ( //si la fecha seleccionada es hoy y la hora seleccionada ya ha pasado mandar un mensaje de advertencia
       fechaSeleccionada && 
-      new Date(fechaSeleccionada).toDateString() === hoy.toDateString() && 
+      timeSelect &&
+      hoySinHora === fechaSel &&
       Number(timeSelect) <= hoy.getTime()
     ) {
       console.log(hoy, "fecha selected: ", fechaSeleccionada);
@@ -89,6 +95,15 @@ export default function Appointments() {
 
     try {
       if(selectedServicio === "URGENCIAS"){
+        if(!selectedUrgencias){
+          Swal.fire({
+            icon: 'warning',
+            title: '¡Selecciona un servicio de urgencias!',
+            text: 'Por favor, selecciona un servicio de urgencias.',
+            confirmButtonText: 'Aceptar'
+          })
+          return
+        }
         await uploadAppointments(formDataUrgencias)
         Swal.fire({
             icon: 'success',
@@ -116,6 +131,16 @@ export default function Appointments() {
         return
       }
 
+      if (!selectedServicio || !fechaSeleccionada || !timeSelect) {
+        Swal.fire({
+          icon: 'warning',
+          title: '¡Completa los campos!',
+          text: 'Por favor, completa todos los campos.',
+          confirmButtonText: 'Aceptar'
+        })
+        return
+      }
+
       await uploadAppointments(formData)
        Swal.fire({
             icon: 'success',
@@ -126,7 +151,6 @@ export default function Appointments() {
       navigate("/history")
 
       return
-
     } catch (error) {
       console.log("Error: ",error)
        Swal.fire({
@@ -136,7 +160,6 @@ export default function Appointments() {
             confirmButtonText: 'Aceptar'
         });
     }
-
   };
 
   return (

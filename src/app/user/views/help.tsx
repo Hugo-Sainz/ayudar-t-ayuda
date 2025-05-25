@@ -9,7 +9,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "../../../components/ui
 import { Tabs, TabsContent } from "../../../components/ui/tabs"
 import { ContactCard } from "../../../components/ui/contact-card"
 import {Map, Marker, ZoomControl } from "pigeon-maps"
-import { href } from "react-router-dom"
 
 export default function AyudaPage() {
   return (
@@ -83,9 +82,9 @@ export default function AyudaPage() {
                   <div className=" md:grid-cols-2 gap-6">
                     <div >
                       <h3 className="font-medium mb-2">Sede Principal</h3>
-                      <p className="text-sm text-gray-600 mb-1">Av. Reforma 1234, Col. Centro</p>
-                      <p className="text-sm text-gray-600 mb-1">Puebla, Puebla, CP 72000</p>
-                      <p className="text-sm text-gray-600">Tel: (222) 123-4567</p>
+                      <p className="text-sm text-gray-600 mb-1">C. 20 Ote 1002, San Francisco</p>
+                      <p className="text-sm text-gray-600 mb-1">Heroica Puebla de Zaragoza, Pue, 72290</p>
+                      <p className="text-sm text-gray-600">Tel: (222) 234-7942</p>
 
                       <div className="mt-4 h-48 bg-gray-200 rounded-lg relative overflow-hidden">
                         <div className=" inset-0 flex items-center justify-center">

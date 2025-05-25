@@ -22,7 +22,7 @@ export function QuickActionCard({
   notificationCount,
   exit
 }: QuickActionCardProps) {
-
+9
   const navigate = useNavigate()
 
   const handleClick = () => {
@@ -38,6 +38,8 @@ export function QuickActionCard({
       console.log("No navigate function provided");
     }
   };
+
+  
 
   return (
     <div

@@ -3,7 +3,7 @@
 import type React from "react"
 
 import { useState } from "react"
-import { ArrowLeft, Eye, EyeOff, Lock, Check } from "lucide-react"
+import { Eye, EyeOff, Lock, Check } from "lucide-react"
 import { Button } from "../../../components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "../../../components/ui/card"
 import { Input } from "../../../components/ui/input"
@@ -11,7 +11,6 @@ import { Label } from "../../../components/ui/laber"
 import { updatePassword } from "../services/password"
 
 export default function UpdatePassword() {
-  const [showCurrentPassword, setShowCurrentPassword] = useState(false)
   const [showNewPassword, setShowNewPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
