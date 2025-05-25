@@ -2,9 +2,12 @@ import LoginCard from '../components/LoginCard'
 import { useNavigate } from 'react-router-dom';
 import { login } from './user/services/authServices';
 import { setLocalStorage } from './user/services/localStorage';
+import { useState } from 'react';
+import { Loader2 } from 'lucide-react';
 
 function Login() {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -16,10 +19,13 @@ function Login() {
       const response = await login(user, password);
       if (response.Status === "Success") {
         const token = "succes"
-
-        navigate("/home");
         setLocalStorage(response, token)
-
+        
+        setLoading(true);
+        await new Promise((resolve) => setTimeout(resolve, 3000));
+        setLoading(false);
+        navigate("/home");
+        
       } else {
         alert("Usuario o contraseña incorrectos");
       }
@@ -44,6 +50,16 @@ function Login() {
           <h2 className="mt-6 text-2xl font-bold tracking-tight text-gray-900">
             Inicio de Sesión
           </h2>
+        </div>
+        <div className='flex flex-col items-center justify-center'>
+          {loading ? (
+            <Loader2 className="w-10 h-10 animate-spin text-red-600" />
+          ) : (
+            <p className="mt-2 text-sm text-gray-600">
+              Inicia sesión para acceder a tu cuenta
+            </p>
+          )}
+
         </div>
         <div className="mt-8">
           <LoginCard onSubmit={handleSubmit} />
