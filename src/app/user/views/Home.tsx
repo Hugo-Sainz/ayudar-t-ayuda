@@ -35,10 +35,10 @@ export default function Home() {
   }, []); // El arreglo vacío [] asegura que solo se ejecute una vez al montarse
 
   return (
-    <div className="h-[800px] overflow-y-scroll md:overflow-y-visible">
+    <div className="h-[800px] overflow-y-scroll md:overflow-y-visible bg-red-100">
 
       {/* Main Content */}
-      <main className="container mx-auto px-10 py-8 relative z-1">
+      <main className="container mx-auto px-10 py-8 relative z-1 h-full">
         <div className="mb-8">
           <h1 className="text-2xl font-bold text-gray-900">Bienvenido, {username}</h1>
           <p className="text-gray-600">¿Qué deseas hacer hoy?</p>
